@@ -1,0 +1,32 @@
+# GitHub Actions workflow to deploy files to an FTP server
+
+name: 🚀 Deploy website to FTP
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment on push to the main branch
+
+jobs:
+  ftp-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest # Use the latest Ubuntu runner
+
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v4
+      # This step checks out a copy of your repository on the runner.
+
+    - name: 📂 Sync files to FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        server-dir: /public_html/   # Optional: target directory on the server
+        # local-dir: ./build/      # Optional: source directory from your repo
+        # exclude: |               # Optional: files/directories to exclude
+        #   **/.git*
+        #   **/.git*/**
+        #   **/node_modules/**
+        
